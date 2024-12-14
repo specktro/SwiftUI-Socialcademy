@@ -10,11 +10,11 @@ import SwiftUI
 struct PostsList: View {
     @State private var showNewPostForm: Bool = false
     @State private var searchText: String = ""
-    private var posts = [Post.testPost]
+    @StateObject private var viewModel: PostsViewModel = PostsViewModel()
     
     var body: some View {
         NavigationView {
-            List(posts) { post in
+            List(viewModel.posts) { post in
                 if searchText.isEmpty || post.contains(searchText) {
                     PostRow(post: post)
                 }
