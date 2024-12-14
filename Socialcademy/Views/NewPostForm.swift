@@ -12,6 +12,7 @@ struct NewPostForm: View {
     let createAction: CreateAction
     
     @Environment(\.dismiss) private var dismiss
+    @State private var state = FormState.idle
     @State private var post = Post(title: "", content: "", authorName: "")
     
     var body: some View {
@@ -30,7 +31,11 @@ struct NewPostForm: View {
                 Button {
                     createPost()
                 } label: {
-                    Text("Create Post")
+                    if state == .working {
+                        ProgressView()
+                    } else {
+                        Text("Create Post")
+                    }
                 }
                 .font(.headline)
                 .frame(maxWidth: .infinity)
@@ -40,16 +45,22 @@ struct NewPostForm: View {
             }
             .onSubmit(createPost)
             .navigationTitle("New Post")
+            .disabled(state == .working)
+            .alert("Cannot Create Post", isPresented: $state.isError, actions: {}) {
+                Text("Sorry, something went wrong")
+            }
         }
     }
     
     private func createPost() {
         Task {
+            state = .working
             do {
                 try await createAction(post)
                 dismiss()
             } catch {
                 print("[NewPostForm] Cannot create post: \(error)")
+                state = .error
             }
         }
     }
