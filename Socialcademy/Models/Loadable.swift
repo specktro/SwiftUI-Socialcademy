@@ -5,6 +5,8 @@
 //  Created by specktro on 14/12/24.
 //
 
+import Foundation
+
 enum Loadable<Value> {
     case loading
     case error(Error)
@@ -47,3 +49,25 @@ extension Loadable: Equatable where Value: Equatable {
         }
     }
 }
+
+#if DEBUG
+extension Loadable {
+    static var error: Loadable<Value> { .error(PreviewError()) }
+    
+    private struct PreviewError: LocalizedError {
+        let errorDescription: String? = "Lorem ipsum dolor set amet."
+    }
+    
+    func simulate() async throws -> Value {
+        switch self {
+        case .loading:
+            try await Task.sleep(for: .milliseconds(10 * 1_000))
+            fatalError("Timeout exceeded for 'loading' case preview")
+        case .error(let error):
+            throw error
+        case .loaded(let value):
+            return value
+        }
+    }
+}
+#endif

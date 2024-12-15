@@ -9,23 +9,28 @@ import SwiftUI
 
 @MainActor
 final class PostsViewModel: ObservableObject {
+    private let postsRepository: PostsRepositoryProtocol
     @Published var posts: Loadable<[Post]> = .loading
     
-    func makeCreateAction() -> NewPostForm.CreateAction {
-        return { [weak self] post in
-            try await PostsRepository.create(post)
-            self?.posts.value?.insert(post, at: 0)
-        }
+    init(postsRepository: PostsRepositoryProtocol = PostsRepository()) {
+        self.postsRepository = postsRepository
     }
     
     func fetchPost() {
         Task {
             do {
-                posts = .loaded(try await PostsRepository.fetchPosts())
+                posts = .loaded(try await postsRepository.fetchPosts())
             } catch {
                 print("[PostViewModel] Cannot fetch posts: \(error)")
                 posts = .error(error)
             }
+        }
+    }
+    
+    func makeCreateAction() -> NewPostForm.CreateAction {
+        return { [weak self] post in
+            try await self?.postsRepository.create(post)
+            self?.posts.value?.insert(post, at: 0)
         }
     }
 }

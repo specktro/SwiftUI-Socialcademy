@@ -10,7 +10,7 @@ import SwiftUI
 struct PostsList: View {
     @State private var showNewPostForm: Bool = false
     @State private var searchText: String = ""
-    @StateObject private var viewModel: PostsViewModel = PostsViewModel()
+    @StateObject var viewModel: PostsViewModel = PostsViewModel()
     
     var body: some View {
         NavigationView {
@@ -58,6 +58,24 @@ struct PostsList: View {
     }
 }
 
-#Preview {
-    PostsList()
+#if DEBUG
+struct PostsList_Previews: PreviewProvider {
+    static var previews: some View {
+        ListPreview(state: .loaded([Post.testPost]))
+        ListPreview(state: .empty)
+        ListPreview(state: .error)
+        ListPreview(state: .loading)
+    }
+    
+    @MainActor
+    private struct ListPreview: View {
+        let state: Loadable<[Post]>
+        
+        var body: some View {
+            let postsRepository = PostsRepositoryStub(state: state)
+            let viewModel = PostsViewModel(postsRepository: postsRepository)
+            PostsList(viewModel: viewModel)
+        }
+    }
 }
+#endif
