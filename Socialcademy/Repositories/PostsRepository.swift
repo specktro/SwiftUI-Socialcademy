@@ -15,6 +15,15 @@ struct PostsRepository {
         let document = postsReference.document(post.id.uuidString)
         try await document.setData(from: post)
     }
+    
+    static func fetchPosts() async throws -> [Post] {
+        let snapshot = try await postsReference
+            .order(by: "timestamp", descending: true)
+            .getDocuments()
+        return snapshot.documents.compactMap { document in
+            try! document.data(as: Post.self)
+        }
+    }
 }
 
 private extension DocumentReference {
