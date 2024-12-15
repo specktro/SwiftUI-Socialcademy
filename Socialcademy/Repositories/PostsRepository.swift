@@ -30,7 +30,7 @@ private extension DocumentReference {
     func setData<T: Encodable>(from value: T) async throws {
         return try await withCheckedThrowingContinuation { continuation in
             try! setData(from: value) { error in
-                if let error {
+                if let error = error {
                     continuation.resume(throwing: error)
                     return
                 }
