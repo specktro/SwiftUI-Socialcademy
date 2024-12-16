@@ -26,7 +26,7 @@ final class AuthService: ObservableObject {
         try await result.user.updateProfile(\.displayName, to: name)
     }
     
-    func singIn(email: String, password: String) async throws {
+    func signIn(email: String, password: String) async throws {
         try await auth.signIn(withEmail: email, password: password)
     }
     
