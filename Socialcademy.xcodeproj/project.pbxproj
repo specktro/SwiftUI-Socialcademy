@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		502E66E82D10AD9600C4ECD1 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 502E66E72D10AD9600C4ECD1 /* FirebaseAuth */; };
 		5078B6C12D0BA5BD00E4FE3F /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 5078B6C02D0BA5BD00E4FE3F /* FirebaseAnalytics */; };
 		5078B6C32D0BA5BD00E4FE3F /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 5078B6C22D0BA5BD00E4FE3F /* FirebaseFirestore */; };
 /* End PBXBuildFile section */
@@ -29,6 +30,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5078B6C12D0BA5BD00E4FE3F /* FirebaseAnalytics in Frameworks */,
+				502E66E82D10AD9600C4ECD1 /* FirebaseAuth in Frameworks */,
 				5078B6C32D0BA5BD00E4FE3F /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -36,10 +38,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		502E66E62D10AD9600C4ECD1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		50454AF12D0A7C6000132A4C = {
 			isa = PBXGroup;
 			children = (
 				50454AFC2D0A7C6000132A4C /* Socialcademy */,
+				502E66E62D10AD9600C4ECD1 /* Frameworks */,
 				50454AFB2D0A7C6000132A4C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -74,6 +84,7 @@
 			packageProductDependencies = (
 				5078B6C02D0BA5BD00E4FE3F /* FirebaseAnalytics */,
 				5078B6C22D0BA5BD00E4FE3F /* FirebaseFirestore */,
+				502E66E72D10AD9600C4ECD1 /* FirebaseAuth */,
 			);
 			productName = Socialcademy;
 			productReference = 50454AFA2D0A7C6000132A4C /* Socialcademy.app */;
@@ -349,6 +360,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		502E66E72D10AD9600C4ECD1 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5078B6BF2D0BA5BD00E4FE3F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
 		5078B6C02D0BA5BD00E4FE3F /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 5078B6BF2D0BA5BD00E4FE3F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
