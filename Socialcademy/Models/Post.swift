@@ -12,6 +12,7 @@ struct Post: Identifiable, Equatable, Codable {
     var title: String
     var content: String
     var authorName: String
+    var isFavorite = false
     var timestamp = Date()
     
     func contains(_ string: String) -> Bool {
