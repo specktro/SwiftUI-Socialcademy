@@ -33,11 +33,17 @@ private extension AuthView {
         var body: some View {
             Form {
                 TextField("Name", text: $viewModel.name)
+                    .textContentType(.name)
+                    .textInputAutocapitalization(.words)
                 TextField("Email", text: $viewModel.email)
+                    .textContentType(.emailAddress)
+                    .textInputAutocapitalization(.never)
                 SecureField("Password", text: $viewModel.password)
+                    .textContentType(.newPassword)
                 Button("Create Account", action: viewModel.submit)
             }
             .navigationTitle("Create Account")
+            .onSubmit(viewModel.submit)
         }
     }
     
@@ -46,13 +52,30 @@ private extension AuthView {
         @ViewBuilder let footer: () -> Footer
         
         var body: some View {
-            Form {
-                TextField("Email", text: $viewModel.email)
-                SecureField("Password", text: $viewModel.password)
+            VStack {
+                Text("Socialcademy")
+                    .font(.title.bold())
+                Group {
+                    TextField("Email", text: $viewModel.email)
+                        .textContentType(.emailAddress)
+                    SecureField("Password", text: $viewModel.password)
+                        .textContentType(.password)
+                }
+                .padding()
+                .background(Color.secondary.opacity(0.15))
+                .cornerRadius(10)
                 Button("Sign In", action: viewModel.submit)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .foregroundColor(.white)
+                    .background(Color.accentColor)
+                    .cornerRadius(10)
                 footer()
+                    .padding()
             }
-            .navigationTitle("Sign In")
+            .navigationBarHidden(true)
+            .onSubmit(viewModel.submit)
+            .padding()
         }
     }
 }
