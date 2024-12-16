@@ -11,6 +11,7 @@ import Foundation
 protocol PostsRepositoryProtocol {
     func create(_ post: Post) async throws
     func fetchPosts() async throws -> [Post]
+    func delete(_ post: Post) async throws
 }
 
 struct PostsRepository: PostsRepositoryProtocol {
@@ -28,6 +29,11 @@ struct PostsRepository: PostsRepositoryProtocol {
         return snapshot.documents.compactMap { document in
             try! document.data(as: Post.self)
         }
+    }
+    
+    func delete(_ post: Post) async throws {
+        let document = postsReference.document(post.id.uuidString)
+        try await document.delete()
     }
 }
 
@@ -49,10 +55,12 @@ private extension DocumentReference {
 struct PostsRepositoryStub: PostsRepositoryProtocol {
     let state: Loadable<[Post]>
     
-    func create(_ post: Post) async throws { }
+    func create(_ post: Post) async throws {}
     
     func fetchPosts() async throws -> [Post] {
         return try await state.simulate()
     }
+    
+    func delete(_ post: Post) async throws {}
 }
 #endif
