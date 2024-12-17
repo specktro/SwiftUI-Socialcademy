@@ -14,6 +14,7 @@ protocol PostsRepositoryProtocol {
     func create(_ post: Post) async throws
     func fetchAllPosts() async throws -> [Post]
     func fetchFavoritePosts() async throws -> [Post]
+    func fetchPosts(by author: User) async throws -> [Post]
     func delete(_ post: Post) async throws
     func favorite(_ post: Post) async throws
     func unfavorite(_ post: Post) async throws
@@ -40,6 +41,10 @@ struct PostsRepository: PostsRepositoryProtocol {
 
     func fetchFavoritePosts() async throws -> [Post] {
         return try await fetchPosts(from: postsReference.whereField("isFavorite", isEqualTo: true))
+    }
+    
+    func fetchPosts(by author: User) async throws -> [Post] {
+        return try await fetchPosts(from: postsReference.whereField("author.id", isEqualTo: author.id))
     }
     
     func delete(_ post: Post) async throws {
@@ -96,6 +101,10 @@ struct PostsRepositoryStub: PostsRepositoryProtocol {
     }
     
     func fetchFavoritePosts() async throws -> [Post] {
+        return try await state.simulate()
+    }
+    
+    func fetchPosts(by author: User) async throws -> [Post] {
         return try await state.simulate()
     }
     
