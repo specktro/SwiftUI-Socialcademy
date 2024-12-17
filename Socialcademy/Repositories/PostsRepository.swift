@@ -9,6 +9,8 @@ import FirebaseFirestore
 import Foundation
 
 protocol PostsRepositoryProtocol {
+    var user: User { get }
+    
     func create(_ post: Post) async throws
     func fetchAllPosts() async throws -> [Post]
     func fetchFavoritePosts() async throws -> [Post]
@@ -18,7 +20,8 @@ protocol PostsRepositoryProtocol {
 }
 
 struct PostsRepository: PostsRepositoryProtocol {
-    let postsReference = Firestore.firestore().collection("posts")
+    let user: User
+    let postsReference = Firestore.firestore().collection("posts_v2")
     
     func create(_ post: Post) async throws {
         let document = postsReference.document(post.id.uuidString)
@@ -75,6 +78,8 @@ private extension DocumentReference {
 
 #if DEBUG
 struct PostsRepositoryStub: PostsRepositoryProtocol {
+    var user = User.testUser
+    
     let state: Loadable<[Post]>
     
     func create(_ post: Post) async throws {}

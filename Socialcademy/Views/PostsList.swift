@@ -10,7 +10,7 @@ import SwiftUI
 struct PostsList: View {
     @State private var showNewPostForm: Bool = false
     @State private var searchText: String = ""
-    @StateObject var viewModel: PostsViewModel = PostsViewModel()
+    @StateObject var viewModel: PostsViewModel
     
     var body: some View {
         NavigationView {
@@ -50,7 +50,7 @@ struct PostsList: View {
                 }
             }
             .sheet(isPresented: $showNewPostForm) {
-                NewPostForm(createAction: viewModel.makeCreateAction())
+                NewPostForm(viewModel: viewModel.makeNewPostViewModel())
             }
         }
         .onAppear {

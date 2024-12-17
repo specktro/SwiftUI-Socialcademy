@@ -11,12 +11,12 @@ struct Post: Identifiable, Equatable, Codable {
     var id = UUID()
     var title: String
     var content: String
-    var authorName: String
     var isFavorite = false
     var timestamp = Date()
+    var author: User
     
     func contains(_ string: String) -> Bool {
-        let properties = [title, content, authorName].map { $0.lowercased() }
+        let properties = [title, content, author.name].map { $0.lowercased() }
         let query = string.lowercased()
         let matches = properties.filter { $0.contains(query) }
         return !matches.isEmpty
@@ -27,5 +27,6 @@ extension Post {
     static let testPost = Post(
         title: "Lorem ipsum",
         content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        authorName: "Jamie Harris")
+        author: User.testUser
+    )
 }
