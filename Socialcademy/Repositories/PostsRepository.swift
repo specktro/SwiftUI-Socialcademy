@@ -107,29 +107,6 @@ private extension PostsRepository {
     }
 }
 
-private extension DocumentReference {
-    func setData<T: Encodable>(from value: T) async throws {
-        return try await withCheckedThrowingContinuation { continuation in
-            try! setData(from: value) { error in
-                if let error = error {
-                    continuation.resume(throwing: error)
-                    return
-                }
-                continuation.resume()
-            }
-        }
-    }
-}
-
-private extension Query {
-    func getDocuments<T: Decodable>(as type: T.Type) async throws -> [T] {
-        let snapshot = try await getDocuments()
-        return snapshot.documents.compactMap { document in
-            try! document.data(as: type)
-        }
-    }
-}
-
 private extension Post {
     func setting<T>(_ property: WritableKeyPath<Post, T>, to newValue: T) -> Post {
         var post = self

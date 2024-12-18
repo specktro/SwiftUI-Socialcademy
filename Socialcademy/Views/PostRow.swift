@@ -10,6 +10,7 @@ import SwiftUI
 struct PostRow: View {
     @ObservedObject var viewModel: PostRowViewModel
     @State private var showConfirmationDialog = false
+    @EnvironmentObject private var factory: ViewModelFactory
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -28,6 +29,12 @@ struct PostRow: View {
             Text(viewModel.content)
             HStack {
                 FavoriteButton(isFavorite: viewModel.isFavorite, action: viewModel.favoritePost)
+                NavigationLink {
+                    CommentsList(viewModel: factory.makeCommentsViewModel(for: viewModel.post))
+                } label: {
+                    Label("Comments", systemImage: "text.bubble")
+                        .foregroundColor(.secondary)
+                }
                 Spacer()
                 if viewModel.canDeletePost {
                     Button(role: .destructive, action: {
