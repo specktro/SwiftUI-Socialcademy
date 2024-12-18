@@ -27,4 +27,14 @@ final class CommentsViewModel: ObservableObject {
             }
         }
     }
+    
+    func makeNewCommentViewModel() -> FormViewModel<Comment> {
+        return FormViewModel<Comment>(
+            initialValue: Comment(content: "", author: commentsRepository.user),
+            action: { [weak self] comment in
+                try await self?.commentsRepository.create(comment)
+                self?.comments.value?.insert(comment, at: 0)
+            }
+        )
+    }
 }

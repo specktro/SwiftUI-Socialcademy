@@ -11,7 +11,7 @@ struct CommentsList: View {
     @StateObject var viewModel: CommentsViewModel
     
     var body: some View {
-        Group {
+        VStack {
             switch viewModel.comments {
             case .loading:
                 ProgressView()
@@ -37,12 +37,37 @@ struct CommentsList: View {
                 }
                 .animation(.default, value: comments)
             }
+            Spacer()
+            NewCommentForm(viewModel: viewModel.makeNewCommentViewModel())
+                .padding()
         }
         .navigationTitle("Comments")
         .navigationBarTitleDisplayMode(.inline)
     }
 }
 
+private extension CommentsList {
+    struct NewCommentForm: View {
+        @StateObject var viewModel: FormViewModel<Comment>
+        
+        var body: some View {
+            HStack {
+                TextField("Comment", text: $viewModel.content)
+                Button(action: viewModel.submit) {
+                    if viewModel.isWorking {
+                        ProgressView()
+                    } else {
+                        Label("Post", systemImage: "paperplane")
+                    }
+                }
+            }
+            .alert("Cannot Post Comment", error: $viewModel.error)
+            .animation(.default, value: viewModel.isWorking)
+            .disabled(viewModel.isWorking)
+            .onSubmit(viewModel.submit)
+        }
+    }
+}
 
 #if DEBUG
 struct CommentsList_Previews: PreviewProvider {
